@@ -16,12 +16,14 @@ df['cleaned_text'] = df['cleaned_text'].fillna('')
 df['emojis'] = df['emojis'].astype(str)  # Ensure all text entries are strings
 df['emojis'] = df['emojis'].fillna('')  # Replace NaNs with empty strings
 
-text_tokenizer = Tokenizer(num_words=10000, oov_token="<OOV>")
+custom_filters = '!"#$%&()*+,-./:;<=>@[\\]^_`{|}~\t\n'
+text_tokenizer = Tokenizer(num_words=10000, oov_token="<OOV>", filters=custom_filters)
 text_tokenizer.fit_on_texts(df['cleaned_text'])
 text_sequences = text_tokenizer.texts_to_sequences(df['cleaned_text'])
 text_padded = pad_sequences(text_sequences, padding='post')
 
-emoji_tokenizer = Tokenizer(num_words=100, filters='')
+
+emoji_tokenizer = Tokenizer(num_words=300, filters='')
 emoji_tokenizer.fit_on_texts(df['emojis'])
 emoji_sequences = emoji_tokenizer.texts_to_sequences(df['emojis'])
 emoji_padded = pad_sequences(emoji_sequences, padding='post')
@@ -33,11 +35,13 @@ emoji_categorical = tf.keras.utils.to_categorical(emoji_padded, num_classes=len(
 emoji_labels = np.argmax(emoji_categorical, axis=1)
 class_weights = compute_class_weight('balanced', classes=np.unique(emoji_labels), y=emoji_labels)
 class_weights_dict = {i: class_weights[i] for i in range(len(class_weights))}
+print(class_weights_dict)
 
 # Define the model
 model = Sequential()
-model.add(Embedding(input_dim=10000, output_dim=64, input_length=text_padded.shape[1]))
-model.add(Bidirectional(LSTM(64)))
+model.add(Embedding(input_dim=10000, output_dim=128, input_length=text_padded.shape[1]))
+model.add(Bidirectional(LSTM(128)))
+model.add(Dense(128,activation='relu'))
 model.add(Dense(len(emoji_tokenizer.word_index) + 1, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -49,7 +53,7 @@ class TrainingProgressCallback(Callback):
         print(f"Epoch {epoch+1} finished. Loss: {logs['loss']:.4f}, Accuracy: {logs['accuracy']:.4f}, Val Loss: {logs['val_loss']:.4f}, Val Accuracy: {logs['val_accuracy']:.4f}")
 
 # Train the model with progress updates and class weights
-model.fit(text_padded, emoji_categorical, epochs=10, batch_size=32, validation_split=0.2, callbacks=[TrainingProgressCallback()], class_weight=class_weights_dict)
+model.fit(text_padded, emoji_categorical, epochs=30, batch_size=32, validation_split=0.1, callbacks=[TrainingProgressCallback()], class_weight=class_weights_dict)
 
 model.save('emoji_prediction_model.h5')
 

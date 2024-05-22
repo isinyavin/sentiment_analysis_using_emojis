@@ -21,13 +21,20 @@ text_sequences = text_tokenizer.texts_to_sequences(df['cleaned_text'])
 text_padded = pad_sequences(text_sequences, padding='post')
 
 
-emoji_tokenizer = Tokenizer(num_words=100, filters='')
+emoji_tokenizer = Tokenizer(num_words=300, filters='')
 emoji_tokenizer.fit_on_texts(df['emojis'])
+emoji_counts = pd.Series(emoji_tokenizer.word_counts).sort_values(ascending=False)
+top_300_emojis = emoji_counts.head(300)
+
+pd.set_option('display.max_rows', 300)
+# Print the 300 most popular emojis and their counts
+print("Top 300 emojis and their counts:")
+print(top_300_emojis)
 
 
 model = load_model('emoji_prediction_model.h5')
 
-evaluation_texts = ["I traveled to moscow"]
+evaluation_texts = ["that's so great"]
 evaluation_sequences = text_tokenizer.texts_to_sequences(evaluation_texts)
 evaluation_padded = pad_sequences(evaluation_sequences, maxlen=text_padded.shape[1], padding='post')
 

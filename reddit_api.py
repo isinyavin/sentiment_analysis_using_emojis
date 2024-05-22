@@ -22,7 +22,7 @@ try:
 
     logger.info("Authenticated as: %s", reddit.user.me())
 
-    subreddit = reddit.subreddit('pics')
+    subreddit = reddit.subreddit('travel')
 
     data = []
 
@@ -42,7 +42,7 @@ try:
 
                 df = pd.DataFrame(data)
 
-                df.to_csv('reddit_comments_with_emojis12.csv', index=False)
+                df.to_csv('reddit_comments_with_emojis22.csv', index=False)
                 logger.info(f"Data saved to reddit_comments_with_emojis10.csv after processing post {post.id}")
 
                 break  
