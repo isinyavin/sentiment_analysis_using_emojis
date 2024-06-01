@@ -6,9 +6,7 @@ from tensorflow.keras.models import load_model
 import numpy as np
 import re
 
-
 df = pd.read_csv('output_file.csv')
-
 
 df['cleaned_text'] = df['cleaned_text'].astype(str)  
 df['cleaned_text'] = df['cleaned_text'].fillna('') 
@@ -28,7 +26,6 @@ text_tokenizer.fit_on_texts(df['cleaned_text'])
 text_sequences = text_tokenizer.texts_to_sequences(df['cleaned_text'])
 text_padded = pad_sequences(text_sequences, padding='post')
 
-
 emoji_tokenizer = Tokenizer(num_words=300, filters='')
 emoji_tokenizer.fit_on_texts(df['emojis'])
 emoji_counts = pd.Series(emoji_tokenizer.word_counts).sort_values(ascending=False)
@@ -38,7 +35,6 @@ pd.set_option('display.max_rows', 300)
 # Print the 300 most popular emojis and their counts
 #print("Top 300 emojis and their counts:")
 #print(top_300_emojis)
-
 
 model = load_model('emoji_prediction_model.h5')
 

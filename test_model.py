@@ -6,6 +6,7 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 import json
 
+
 physical_devices = tf.config.list_physical_devices('GPU')
 if physical_devices:
     print("Using GPU")
