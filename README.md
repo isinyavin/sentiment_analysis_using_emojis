@@ -1,4 +1,4 @@
-# Applying Natural Language Processing Classification Techniques to Predict Relevant Emojis Given Textual Input
+# Applying Machine Learning/NLP Classification Techniques to Predict Relevant Emojis Given Textual Input
 
 Trained a BERT (Bidirectional Encoder Representations from Transformers) model on 520K social media comments scraped from Reddit's API to develop a classification algorithm that predicts relevant emojis based on textual input, optimizing the model through adjustments of loss and optimization functions.
 
@@ -20,3 +20,7 @@ Trained a BERT (Bidirectional Encoder Representations from Transformers) model o
 - **older_model_files**: Contains various older models that perform worse than the current model. This includes an LSTM (Long Short-Term Memory) model and an unbalanced BERT model.
 - **app.py**: The main Streamlit application script that runs the web interface for the emoji prediction model.
 - **requirements.txt**: A file listing all the required Python packages for the project.
+
+## How to Use the Model
+
+Model is hosted at [https://predict-emojis.streamlit.app/]
