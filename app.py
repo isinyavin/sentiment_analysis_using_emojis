@@ -28,7 +28,7 @@ def load_model_and_tokenizers():
     emoji_tokenizer = load_emoji_tokenizer('emoji_tokenizer_config_500torch.json')
     return tokenizer, model, emoji_tokenizer
 
-@st.cache_data  # Cache the index-to-emoji mapping
+@st.cache_data 
 def get_index_to_emoji(_emoji_tokenizer):
     return {v: k for k, v in _emoji_tokenizer.word_index.items()}
 
@@ -48,7 +48,7 @@ def preprocess_text(text, tokenizer, max_len):
     )
     return encoding['input_ids'], encoding['attention_mask']
 
-@st.cache_data  # Cache the prediction results based on the input text
+@st.cache_data  
 def predict_emojis(text, _model, _tokenizer, _emoji_tokenizer, _index_to_emoji):
     max_len = 128  
     input_ids, attention_mask = preprocess_text(text, _tokenizer, max_len)
@@ -77,7 +77,6 @@ if st.button("Predict"):
     if text:
         with st.spinner('Predicting...'):
             emojis, probabilities, filtered_results = predict_emojis(text, model, tokenizer, emoji_tokenizer, index_to_emoji)
-            st.write("Predicted emojis and probabilities:")
             for emoji, prob in filtered_results:
                 st.write(f"{emoji}: {prob:.2%}")
     else:
