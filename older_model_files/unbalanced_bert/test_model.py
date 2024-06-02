@@ -45,6 +45,6 @@ def predict_emojis(text, model, tokenizer, emoji_tokenizer):
 
     return filtered_results
 
-text = "I lost i give up"
+text = "hi"
 predictions = predict_emojis(text, model, bert_tokenizer, emoji_tokenizer)
 print(predictions)

@@ -17,7 +17,7 @@ from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 import re
 
-df = pd.read_csv('output_file.csv')
+df = pd.read_csv('data_preprocessing/cleaned_data.csv')
 df['cleaned_text'] = df['cleaned_text'].astype(str).fillna('')
 
 df['emojis'] = df['emojis'].astype(str).fillna('')

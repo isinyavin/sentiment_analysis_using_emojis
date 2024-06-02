@@ -82,7 +82,7 @@ if 'comment_body' in df.columns:
 
     df['emojis'] = df['emojis'].apply(extract_emojis)
 
-    output_path = 'output_file.csv'
+    output_path = 'cleaned_data.csv'
     df.to_csv(output_path, index=False)
     print(f"Processed data saved to {output_path}")
 else:

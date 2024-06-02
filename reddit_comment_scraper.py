@@ -9,9 +9,9 @@ from prawcore.exceptions import RequestException, ResponseException
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-client_id = 'cd0ceYs7urf4HRJo4R-4NA'
-client_secret = 'eNrNXBmA5ZTXl3PvIC3IhFWxY0VZ-g'
-user_agent = 'emoji-sentiment-analysis-script by /u/russian-rabbit'
+client_id = ''
+client_secret = ''
+user_agent = ''
 
 try:
 
@@ -22,7 +22,8 @@ try:
 
     logger.info("Authenticated as: %s", reddit.user.me())
 
-    subreddit = reddit.subreddit('unitedkingdom')
+    #subredditnamehere
+    subreddit = reddit.subreddit('')
 
     data = []
 
