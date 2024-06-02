@@ -13,7 +13,7 @@ Trained a BERT (Bidirectional Encoder Representations from Transformers) model o
 
 ## Files and Directories
 
--**model_builder.py**: Script that builds the model.
+- **model_builder.py**: Script that builds the model.
 - **individual_scrapes**: Contains CSV files of various downloads of comments.
 - **emoji_prediction_model_torch_500**: The main machine learning model directory, which includes a classification model predicting 500 of the most popular emojis in training data.
 - **/data_preprocessing/data_cleaner.py**: Script for cleaning and optimizing input data for model training. This includes extracting and pairing emojis with text, and simplifying emojis by distilling optional emoji modifiers.
