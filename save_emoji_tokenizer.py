@@ -3,17 +3,11 @@ import pandas as pd
 import tensorflow as tf
 from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
-from transformers import BertTokenizer, TFBertForSequenceClassification, create_optimizer
-from tensorflow.keras.callbacks import Callback
 from tensorflow.keras.utils import to_categorical
 import pandas as pd
 import tensorflow as tf
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.models import Sequential, load_model
-from tensorflow.keras.layers import Embedding, LSTM, Dense, Bidirectional
-from tensorflow.keras.callbacks import Callback
-from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 import re
 
