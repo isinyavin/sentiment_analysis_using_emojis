@@ -15,8 +15,8 @@ Trained a BERT (Bidirectional Encoder Representations from Transformers) model o
 
 - **individual_scrapes**: Contains CSV files of various downloads of comments.
 - **emoji_prediction_model_torch_500**: The main machine learning model directory, which includes a classification model predicting 500 of the most popular emojis in training data.
-- **data_cleaner.py**: Script for cleaning and optimizing input data for model training. This includes extracting and pairing emojis with text, and simplifying emojis by distilling optional emoji modifiers.
-- **output_file.csv**: The main data file used for training the model.
+- **/data_preprocessing/data_cleaner.py**: Script for cleaning and optimizing input data for model training. This includes extracting and pairing emojis with text, and simplifying emojis by distilling optional emoji modifiers.
+- **/data_preprocessing/cleaned_data.csv**: The main data file used for training the model.
 - **older_model_files**: Contains various older models that perform worse than the current model. This includes an LSTM (Long Short-Term Memory) model and an unbalanced BERT model.
 - **app.py**: The main Streamlit application script that runs the web interface for the emoji prediction model.
 - **requirements.txt**: A file listing all the required Python packages for the project.
