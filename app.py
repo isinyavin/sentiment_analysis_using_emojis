@@ -6,11 +6,13 @@ with st.spinner('Loading model and tokenizer...'):
     from tensorflow.keras.preprocessing.text import Tokenizer
     import numpy as np
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+@st.cache_resource 
+def load_model_and_tokenizers():
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
     model = BertForSequenceClassification.from_pretrained('emoji_prediction_model_torch_500')
     model = model.to(device)
     model.eval()
-
 
     def load_emoji_tokenizer(file_path):
         with open(file_path, 'r') as file:
@@ -24,10 +26,14 @@ with st.spinner('Loading model and tokenizer...'):
             return tokenizer
 
     emoji_tokenizer = load_emoji_tokenizer('emoji_tokenizer_config_500torch.json')
+    return tokenizer, model, emoji_tokenizer
 
+@st.cache_data  # Cache the index-to-emoji mapping
+def get_index_to_emoji(_emoji_tokenizer):
+    return {v: k for k, v in _emoji_tokenizer.word_index.items()}
 
-index_to_emoji = {v: k for k, v in emoji_tokenizer.word_index.items()}
-
+tokenizer, model, emoji_tokenizer = load_model_and_tokenizers()
+index_to_emoji = get_index_to_emoji(emoji_tokenizer)
 
 def preprocess_text(text, tokenizer, max_len):
     encoding = tokenizer.encode_plus(
@@ -42,35 +48,38 @@ def preprocess_text(text, tokenizer, max_len):
     )
     return encoding['input_ids'], encoding['attention_mask']
 
-def predict_emojis(text, model, tokenizer, emoji_tokenizer):
+@st.cache_data  # Cache the prediction results based on the input text
+def predict_emojis(text, _model, _tokenizer, _emoji_tokenizer, _index_to_emoji):
     max_len = 128  
-    input_ids, attention_mask = preprocess_text(text, tokenizer, max_len)
+    input_ids, attention_mask = preprocess_text(text, _tokenizer, max_len)
     input_ids = input_ids.to(device)
     attention_mask = attention_mask.to(device)
 
     with torch.no_grad():
-        outputs = model(input_ids, attention_mask=attention_mask)
+        outputs = _model(input_ids, attention_mask=attention_mask)
         logits = outputs.logits
         probabilities = torch.nn.functional.softmax(logits, dim=1).cpu().numpy()[0]
 
     top_n = 5
     top_indices = probabilities.argsort()[-top_n:][::-1]
-    top_emojis = [index_to_emoji.get(i, '') for i in top_indices]
+    top_emojis = [_index_to_emoji.get(i, '') for i in top_indices]
     top_probabilities = probabilities[top_indices]
 
     filtered_results = [(emoji, float(prob)) for emoji, prob in zip(top_emojis, top_probabilities) if emoji != '']
 
     return top_emojis, top_probabilities, filtered_results
 
+
 st.title("Emoji Prediction App")
 
 text = st.text_input("Enter text to predict emojis:")
 if st.button("Predict"):
     if text:
-        emojis, probabilities, filtered_results = predict_emojis(text, model, tokenizer, emoji_tokenizer)
-        st.write("Predicted emojis and probabilities:")
-        for emoji, prob in filtered_results:
-            st.write(f"{emoji}: {prob:.2%}")
+        with st.spinner('Predicting...'):
+            emojis, probabilities, filtered_results = predict_emojis(text, model, tokenizer, emoji_tokenizer, index_to_emoji)
+            st.write("Predicted emojis and probabilities:")
+            for emoji, prob in filtered_results:
+                st.write(f"{emoji}: {prob:.2%}")
     else:
         st.write("Please enter some text to predict emojis.")
 
