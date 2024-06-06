@@ -1,6 +1,6 @@
 # Applying Machine Learning/NLP Classification Techniques to Predict Relevant Emojis Given Textual Input
 
-![demo](https://github.com/isinyavin/sentiment_analysis_using_emojis/blob/main/demo.gif)
+<img src="https://github.com/isinyavin/sentiment_analysis_using_emojis/blob/main/demo.gif" width="70%" height="70%"/>
 
 Trained a BERT (Bidirectional Encoder Representations from Transformers) model on 520K social media comments scraped from Reddit's API to develop a classification algorithm that predicts relevant emojis based on textual input, optimizing the model through adjustments of loss and optimization functions.
 
