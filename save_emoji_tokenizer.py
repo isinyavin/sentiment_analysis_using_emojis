@@ -33,3 +33,4 @@ def save_emoji_tokenizer(tokenizer, file_path):
 
 
 save_emoji_tokenizer(emoji_tokenizer, 'emoji_tokenizer_config2.json')
+

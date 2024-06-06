@@ -70,7 +70,7 @@ def predict_emojis(text, _model, _tokenizer, _emoji_tokenizer, _index_to_emoji):
     return top_emojis, top_probabilities, filtered_results
 
 
-st.title("Emoji Prediction App")
+st.title("Emoji Prediction Model")
 
 text = st.text_input("Enter text to predict emojis:")
 if st.button("Predict"):
