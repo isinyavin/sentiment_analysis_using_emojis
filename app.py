@@ -6,7 +6,7 @@ with st.spinner('Loading model and tokenizer...'):
     import torch
     from transformers import BertTokenizer, BertForSequenceClassification
     import json
-    from keras.preprocessing.text import Tokenizer
+    from tensorflow.keras.preprocessing.text import Tokenizer
     import numpy as np
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
