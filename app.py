@@ -1,3 +1,6 @@
+import os
+os.environ["TRANSFORMERS_NO_TF"] = "1"
+
 import streamlit as st
 with st.spinner('Loading model and tokenizer...'):
     import torch
