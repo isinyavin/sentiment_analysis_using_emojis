@@ -1,6 +1,7 @@
 import os
 os.environ["TRANSFORMERS_NO_TF"] = "1"
 
+
 import streamlit as st
 with st.spinner('Loading model and tokenizer...'):
     import torch
@@ -9,6 +10,11 @@ with st.spinner('Loading model and tokenizer...'):
     from tensorflow.keras.preprocessing.text import Tokenizer
     import numpy as np
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+class SimpleTokenizer:
+    def __init__(self, word_index):
+        self.word_index = word_index
+        self.index_word = {v: k for k, v in word_index.items()}
 
 @st.cache_resource 
 def load_model_and_tokenizers():
@@ -20,13 +26,8 @@ def load_model_and_tokenizers():
     def load_emoji_tokenizer(file_path):
         with open(file_path, 'r') as file:
             tokenizer_config = json.load(file)
-            tokenizer = Tokenizer(num_words=500, filters='')
-            tokenizer.word_index = tokenizer_config['word_index']
-            if 'index_word' in tokenizer_config:
-                tokenizer.index_word = tokenizer_config['index_word']
-            else:
-                tokenizer.index_word = {v: k for k, v in tokenizer.word_index.items()}
-            return tokenizer
+            word_index = tokenizer_config['word_index']
+            return SimpleTokenizer(word_index)
 
     emoji_tokenizer = load_emoji_tokenizer('emoji_tokenizer_config_500torch.json')
     return tokenizer, model, emoji_tokenizer
